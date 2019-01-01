@@ -17,13 +17,14 @@ export const getTimeAgo = timestamp => {
 };
 
 // Combine the question and author into a single object
-export const formatQuestionData = (question, users) => {
+export const formatQuestionData = (question, users, didUserAnswer) => {
   const author = users[question.author];
   const timeAgo = getTimeAgo(question.timestamp);
 
   return {
     question,
     author,
-    timeAgo
+    timeAgo,
+    didUserAnswer
   };
 };

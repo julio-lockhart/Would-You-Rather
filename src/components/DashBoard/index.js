@@ -37,9 +37,9 @@ const mapStateToProps = ({ authUser, users, questions }) => {
 
   for (let question of questionsArray) {
     if (userAnsweredQuestions.includes(question.id)) {
-      answeredQuestions.push(formatQuestionData(question, users));
+      answeredQuestions.push(formatQuestionData(question, users, true));
     } else {
-      unansweredQuestions.push(formatQuestionData(question, users));
+      unansweredQuestions.push(formatQuestionData(question, users, false));
     }
   }
 

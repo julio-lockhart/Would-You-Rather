@@ -8,10 +8,18 @@ import { _saveQuestion } from "../utils/_DATA";
 import { setAuthUser } from "../actions/authUser";
 
 // Question Actions
-import { addQuestion, receiveQuestions } from "../actions/questions";
+import {
+  addQuestion,
+  saveQuestionAnswer,
+  receiveQuestions
+} from "../actions/questions";
 
 // User Actions
-import { addUserQuestion, receiveUsers } from "../actions/users";
+import {
+  addUserQuestion,
+  saveUserAnswer,
+  receiveUsers
+} from "../actions/users";
 
 const AUTH_ID = "tylermcginnis";
 
@@ -49,5 +57,12 @@ export const handleAddNewQuestion = (author, optionOne, optionTwo) => {
         alert(e);
         console.log(e);
       });
+  };
+};
+
+export const handleAnswerQuestion = (authUser, questionID, answer) => {
+  return dispatch => {
+    dispatch(saveQuestionAnswer(authUser, questionID, answer));
+    dispatch(saveUserAnswer(authUser, questionID, answer));
   };
 };

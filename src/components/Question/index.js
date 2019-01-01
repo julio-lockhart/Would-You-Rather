@@ -1,4 +1,8 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+
+// Actions
+import { handleAnswerQuestion } from "../../actions/shared";
 
 // React-Bootstrap Components
 import Container from "react-bootstrap/lib/Container";
@@ -11,69 +15,159 @@ import ButtonToolbar from "react-bootstrap/lib/ButtonToolbar";
 import ToggleButtonGroup from "react-bootstrap/lib/ToggleButtonGroup";
 
 // Inline styles
-import { cardHeaderStyle } from "./styles";
+import {
+  cardHeaderStyle,
+  unAnsweredQuestionStyle,
+  answeredQuestionStyle
+} from "./styles";
 
-const Question = ({ data }) => {
-  const { author, question, timeAgo } = data;
-  const { name, avatarURL } = author;
-  const { optionOne, optionTwo } = question;
+class Question extends Component {
+  state = {
+    selection: null,
+    buttonDisabled: true
+  };
 
-  return (
-    <Card>
-      <Card.Header style={cardHeaderStyle}>{`${name} asks:`}</Card.Header>
+  renderAnswerButton = () => {
+    const { buttonDisabled } = this.state;
 
-      <Card.Body>
-        <Container>
-          <Row>
-            <Col xs={"auto"}>
-              <img
-                src={avatarURL}
-                alt="avatar"
-                className="rounded-circle"
-                width="120"
-                height="120"
-              />
-            </Col>
+    return (
+      <Button
+        className="mt-3 mb-3"
+        variant="primary"
+        onClick={this.handleSubmit}
+        disabled={buttonDisabled}
+      >
+        Answer This Question
+      </Button>
+    );
+  };
 
-            <Col>
-              <Card.Title>Would you rather...</Card.Title>
+  renderViewResultsButton = () => {
+    return (
+      <Button
+        className="mt-3 mb-3"
+        onClick={this.handleViewPolls}
+        variant="success"
+      >
+        View Polls
+      </Button>
+    );
+  };
 
-              <ButtonToolbar>
-                <ToggleButtonGroup
-                  className="w-100"
-                  type="radio"
-                  name="options"
-                  vertical
-                >
-                  <ToggleButton
-                    className="text-left"
-                    variant="outline-secondary"
-                    value={0}
+  handleSelectionChange = e => {
+    this.setState({
+      selection: e.target.value,
+      buttonDisabled: false
+    });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+
+    const { dispatch, authUser } = this.props;
+    const { question } = this.props.data;
+    const answer = this.state.selection;
+
+    if (answer) {
+      dispatch(handleAnswerQuestion(authUser, question.id, answer));
+    }
+  };
+
+  handleViewPolls = e => {
+    e.preventDefault();
+
+    console.log("View Result");
+  };
+
+  render() {
+    const { authUser } = this.props;
+    const { author, question, timeAgo, didUserAnswer } = this.props.data;
+    const { name, avatarURL } = author;
+    const { optionOne, optionTwo } = question;
+
+    // If the user answered this question, determine which answer they selected
+    // so that it can be highlighted
+    let wasOptionOneSelected = false;
+    let wasOptionTwoSelected = false;
+
+    if (didUserAnswer) {
+      wasOptionOneSelected = question.optionOne.votes.includes(authUser);
+      wasOptionTwoSelected = question.optionTwo.votes.includes(authUser);
+    }
+
+    return (
+      <Card>
+        <Card.Header style={cardHeaderStyle}>{`${name} asks:`}</Card.Header>
+
+        <Card.Body>
+          <Container>
+            <Row>
+              <Col xs={"auto"}>
+                <img
+                  src={avatarURL}
+                  alt="avatar"
+                  className="rounded-circle"
+                  width="120"
+                  height="120"
+                />
+              </Col>
+
+              <Col>
+                <Card.Title>Would you rather...</Card.Title>
+
+                <ButtonToolbar>
+                  <ToggleButtonGroup
+                    className="w-100"
+                    type="radio"
+                    name="options"
+                    vertical
                   >
-                    {optionOne.text}
-                  </ToggleButton>
+                    <ToggleButton
+                      style={
+                        wasOptionOneSelected
+                          ? answeredQuestionStyle
+                          : unAnsweredQuestionStyle
+                      }
+                      variant="outline-secondary"
+                      onChange={this.handleSelectionChange}
+                      value="optionOne"
+                      disabled={didUserAnswer}
+                    >
+                      {optionOne.text}
+                    </ToggleButton>
 
-                  <ToggleButton
-                    className="text-left"
-                    variant="outline-secondary"
-                    value={1}
-                  >
-                    {optionTwo.text}
-                  </ToggleButton>
-                </ToggleButtonGroup>
+                    <ToggleButton
+                      style={
+                        wasOptionTwoSelected
+                          ? answeredQuestionStyle
+                          : unAnsweredQuestionStyle
+                      }
+                      variant="outline-secondary"
+                      onChange={this.handleSelectionChange}
+                      value="optionTwo"
+                      disabled={didUserAnswer}
+                    >
+                      {optionTwo.text}
+                    </ToggleButton>
+                  </ToggleButtonGroup>
 
-                <Button className="mt-3 mb-3" variant="primary">
-                  Answer This Question
-                </Button>
-              </ButtonToolbar>
-            </Col>
-          </Row>
-        </Container>
-      </Card.Body>
+                  {didUserAnswer
+                    ? this.renderViewResultsButton()
+                    : this.renderAnswerButton()}
+                </ButtonToolbar>
+              </Col>
+            </Row>
+          </Container>
+        </Card.Body>
 
-      <Card.Footer className="text-muted">{timeAgo}</Card.Footer>
-    </Card>
-  );
+        <Card.Footer className="text-muted">{timeAgo}</Card.Footer>
+      </Card>
+    );
+  }
+}
+
+const mapStateToProps = ({ authUser }) => {
+  return { authUser };
 };
 
-export default Question;
+export default connect(mapStateToProps)(Question);
