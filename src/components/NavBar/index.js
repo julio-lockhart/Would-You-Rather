@@ -13,7 +13,7 @@ const NavBar = ({ user }) => {
   return (
     <Navbar expand="lg" variant="light" bg="light">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="#">
           <img
             src={logo}
             width="30"
