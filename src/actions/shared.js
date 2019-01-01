@@ -25,7 +25,6 @@ const AUTH_ID = "tylermcginnis";
 
 /* Grab the initial data */
 export const handleInitialData = () => {
-  console.log("Calling Handle Initial data");
   return dispatch => {
     dispatch(showLoading());
     return getInitialData().then(({ users, questions }) => {

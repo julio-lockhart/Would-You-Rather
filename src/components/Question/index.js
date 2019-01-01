@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 // Actions
 import { handleAnswerQuestion } from "../../actions/shared";
@@ -76,7 +77,8 @@ class Question extends Component {
   handleViewPolls = e => {
     e.preventDefault();
 
-    console.log("View Result");
+    const { question } = this.props.data;
+    this.props.history.push(`/question/${question.id}`);
   };
 
   render() {
@@ -170,4 +172,4 @@ const mapStateToProps = ({ authUser }) => {
   return { authUser };
 };
 
-export default connect(mapStateToProps)(Question);
+export default withRouter(connect(mapStateToProps)(Question));
