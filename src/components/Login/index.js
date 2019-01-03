@@ -20,6 +20,17 @@ class Login extends Component {
     redirectToHome: false
   };
 
+  componentDidMount = () => {
+    const { authUser } = this.props;
+
+    // Redirect to the home page if the user is logged in
+    if (authUser !== null) {
+      this.setState({
+        redirectToHome: true
+      });
+    }
+  };
+
   handleUserSelectionChange = e => {
     const value = e.target.value;
     const user = this.props.users[value];

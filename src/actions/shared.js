@@ -4,9 +4,6 @@ import { showLoading, hideLoading } from "react-redux-loading";
 import { getInitialData } from "../utils/api";
 import { _saveQuestion } from "../utils/_DATA";
 
-// Authed Actions
-import { setAuthUser } from "../actions/authUser";
-
 // Question Actions
 import {
   addQuestion,
@@ -21,8 +18,6 @@ import {
   receiveUsers
 } from "../actions/users";
 
-const AUTH_ID = "tylermcginnis";
-
 /* Grab the initial data */
 export const handleInitialData = () => {
   return dispatch => {
@@ -30,7 +25,6 @@ export const handleInitialData = () => {
     return getInitialData().then(({ users, questions }) => {
       dispatch(receiveUsers(users));
       dispatch(receiveQuestions(questions));
-      dispatch(setAuthUser(AUTH_ID));
       dispatch(hideLoading());
     });
   };

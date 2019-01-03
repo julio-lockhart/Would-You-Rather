@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import LoadingBar from "react-redux-loading";
 
 // API
@@ -20,23 +20,26 @@ class App extends Component {
   }
 
   render() {
-    const { loading } = this.props;
+    const { authUser, isLoading } = this.props;
 
     return (
       <Router>
         <Fragment>
-          <LoadingBar />
-          {loading ? (
-            <div>Loading</div>
+          {authUser === null ? (
+            <div className="container mt-5">
+              {isLoading ? <LoadingBar /> : <Login />}
+            </div>
           ) : (
             <div>
               <NavBar />
               <div className="container mt-4 mb-4">
-                <Route path="/" exact component={DashBoard} />
-                <Route path="/new" component={NewQuestion} />
-                <Route path="/login" component={Login} />
-                <Route path="/leaderboard" component={LeaderBoard} />
-                <Route path="/question/:id" component={QuestionResults} />
+                <Switch>
+                  <Route path="/" exact component={DashBoard} />
+                  <Route path="/new" component={NewQuestion} />
+                  <Route path="/login" component={Login} />
+                  <Route path="/leaderboard" component={LeaderBoard} />
+                  <Route path="/question/:id" component={QuestionResults} />
+                </Switch>
               </div>
             </div>
           )}
@@ -46,9 +49,11 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ authUser }) => {
+const mapStateToProps = ({ authUser, loadingBar }) => {
+  console.log("loading", loadingBar.default);
   return {
-    loading: authUser === null
+    isLoading: loadingBar.default === 0 ? false : true,
+    authUser
   };
 };
 
