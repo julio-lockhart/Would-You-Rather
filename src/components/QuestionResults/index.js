@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
 import { Progress } from "react-sweet-progress";
 import "react-sweet-progress/lib/style.css";
+
+// Components
+import QuestionNotFound from "../QuestionNotFound";
 
 // React-Bootstrap Components
 import Container from "react-bootstrap/lib/Container";
@@ -15,6 +17,10 @@ import ListGroupItem from "react-bootstrap/lib/ListGroupItem";
 class QuestionResults extends Component {
   render() {
     const { author, question } = this.props;
+
+    if (question === undefined) {
+      return <QuestionNotFound />;
+    }
 
     const optionOneVotesCount = question.optionOne.votes.length;
     const optionTwoVotesCount = question.optionTwo.votes.length;
