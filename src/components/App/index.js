@@ -7,6 +7,7 @@ import LoadingBar from "react-redux-loading";
 import { handleInitialData } from "../../actions/shared";
 
 // Components
+import Login from "../Login";
 import NavBar from "../NavBar";
 import DashBoard from "../DashBoard";
 import NewQuestion from "../NewQuestion";
@@ -33,6 +34,7 @@ class App extends Component {
               <div className="container mt-4 mb-4">
                 <Route path="/" exact component={DashBoard} />
                 <Route path="/new" component={NewQuestion} />
+                <Route path="/login" component={Login} />
                 <Route path="/leaderboard" component={LeaderBoard} />
                 <Route path="/question/:id" component={QuestionResults} />
               </div>

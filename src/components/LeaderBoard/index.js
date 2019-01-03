@@ -8,7 +8,7 @@ import LeaderBoardItem from "./LeaderBoardItem";
 import ListGroup from "react-bootstrap/lib/ListGroup";
 import ListGroupItem from "react-bootstrap/lib/ListGroupItem";
 
-const LeaderBoard = ({ authUser, leaders }) => {
+const LeaderBoard = ({ leaders }) => {
   return leaders.length > 0 ? (
     <ListGroup>
       {leaders.map((leader, index) => (
@@ -22,7 +22,7 @@ const LeaderBoard = ({ authUser, leaders }) => {
   );
 };
 
-const mapStateToProps = ({ authUser, users }) => {
+const mapStateToProps = ({ users }) => {
   // Sort leaders based on the: "sum of the number of questions
   // they’ve asked and the number of questions they’ve answered"
   const sortedLeaders = Object.values(users).sort((a, b) => {
@@ -32,7 +32,6 @@ const mapStateToProps = ({ authUser, users }) => {
   });
 
   return {
-    authUser,
     leaders: sortedLeaders
   };
 };
