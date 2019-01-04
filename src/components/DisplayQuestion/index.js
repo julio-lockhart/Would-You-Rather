@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-// Actions
-import { handleAnswerQuestion } from "../../actions/shared";
-
 // React-Bootstrap Components
 import Container from "react-bootstrap/lib/Container";
 import Col from "react-bootstrap/lib/Col";
@@ -20,23 +17,19 @@ import {
   cardHeaderStyle,
   unAnsweredQuestionStyle,
   answeredQuestionStyle
-} from "./styles";
+} from "../CommonStyles";
 
-class Question extends Component {
+class DisplayQuestion extends Component {
   state = {
-    selection: null,
-    buttonDisabled: true
+    selection: null
   };
 
   renderAnswerButton = () => {
-    const { buttonDisabled } = this.state;
-
     return (
       <Button
         className="mt-3 mb-3"
         variant="primary"
-        onClick={this.handleSubmit}
-        disabled={buttonDisabled}
+        onClick={this.handleAnswerQuestion}
       >
         Answer This Question
       </Button>
@@ -55,23 +48,11 @@ class Question extends Component {
     );
   };
 
-  handleSelectionChange = e => {
-    this.setState({
-      selection: e.target.value,
-      buttonDisabled: false
-    });
-  };
-
-  handleSubmit = e => {
+  handleAnswerQuestion = e => {
     e.preventDefault();
 
-    const { dispatch, authUser } = this.props;
     const { question } = this.props.data;
-    const answer = this.state.selection;
-
-    if (answer) {
-      dispatch(handleAnswerQuestion(authUser, question.id, answer));
-    }
+    this.props.history.push(`/question/${question.id}`);
   };
 
   handleViewPolls = e => {
@@ -131,9 +112,7 @@ class Question extends Component {
                           : unAnsweredQuestionStyle
                       }
                       variant="outline-secondary"
-                      onChange={this.handleSelectionChange}
-                      value="optionOne"
-                      disabled={didUserAnswer}
+                      disabled
                     >
                       {optionOne.text}
                     </ToggleButton>
@@ -145,9 +124,7 @@ class Question extends Component {
                           : unAnsweredQuestionStyle
                       }
                       variant="outline-secondary"
-                      onChange={this.handleSelectionChange}
-                      value="optionTwo"
-                      disabled={didUserAnswer}
+                      disabled
                     >
                       {optionTwo.text}
                     </ToggleButton>
@@ -172,4 +149,4 @@ const mapStateToProps = ({ authUser }) => {
   return { authUser };
 };
 
-export default withRouter(connect(mapStateToProps)(Question));
+export default withRouter(connect(mapStateToProps)(DisplayQuestion));

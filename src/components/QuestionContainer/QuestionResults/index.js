@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Progress } from "react-sweet-progress";
 import "react-sweet-progress/lib/style.css";
 
@@ -26,8 +25,12 @@ class QuestionResults extends Component {
     const optionTwoVotesCount = question.optionTwo.votes.length;
     const totalVotesCount = optionOneVotesCount + optionTwoVotesCount;
 
-    const optionOnePercentage = (optionOneVotesCount / totalVotesCount) * 100;
-    const optionTwoPercentage = (optionTwoVotesCount / totalVotesCount) * 100;
+    const optionOnePercentage = roundNumber(
+      (optionOneVotesCount / totalVotesCount) * 100
+    );
+    const optionTwoPercentage = roundNumber(
+      (optionTwoVotesCount / totalVotesCount) * 100
+    );
 
     return (
       <Card>
@@ -89,19 +92,10 @@ class QuestionResults extends Component {
   }
 }
 
-const mapStateToProps = ({ users, questions }, props) => {
-  const { id } = props.match.params;
-  const question = questions[id];
-  let author = {};
-
-  if (question) {
-    author = users[question.author];
-  }
-
-  return {
-    author,
-    question
-  };
+// Round a number to 1 decimal place
+const roundNumber = num => {
+  let strNum = num.toFixed(1);
+  return parseInt(strNum, 10);
 };
 
-export default connect(mapStateToProps)(QuestionResults);
+export default QuestionResults;

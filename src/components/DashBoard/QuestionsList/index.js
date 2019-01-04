@@ -1,9 +1,10 @@
 import React from "react";
-import Question from "../../Question";
+import DisplayQuestion from "../../DisplayQuestion";
 
 // React-Bootstrap Components
 import ListGroup from "react-bootstrap/lib/ListGroup";
 import ListGroupItem from "react-bootstrap/lib/ListGroupItem";
+import Fade from "react-bootstrap/lib/Fade";
 
 const QuestionsList = ({ questions }) => {
   const orderedQuestions = questions.sort((a, b) => {
@@ -14,12 +15,12 @@ const QuestionsList = ({ questions }) => {
     <ListGroup>
       {orderedQuestions.map(entry => (
         <ListGroupItem key={entry.question.id}>
-          <Question data={entry} />
+          <DisplayQuestion data={entry} />
         </ListGroupItem>
       ))}
     </ListGroup>
   ) : (
-    <div>Empty</div>
+    <div className="text-center mt-3 display-4">No Questions to Display</div>
   );
 };
 

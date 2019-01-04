@@ -25,10 +25,10 @@ const LeaderBoard = ({ leaders }) => {
 const mapStateToProps = ({ users }) => {
   // Sort leaders based on the: "sum of the number of questions
   // they’ve asked and the number of questions they’ve answered"
-  const sortedLeaders = Object.values(users).sort((a, b) => {
+  let sortedLeaders = Object.values(users).sort((a, b) => {
     const entry1 = Object.keys(a.answers).length + a.questions.length;
     const entry2 = Object.keys(b.answers).length + b.questions.length;
-    return entry2 >= entry1;
+    return entry2 - entry1;
   });
 
   return {

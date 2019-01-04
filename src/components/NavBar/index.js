@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { NavLink, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
+// React-Bootstrap Components
 import Container from "react-bootstrap/lib/Container";
 import Nav from "react-bootstrap/lib/Nav";
 import Navbar from "react-bootstrap/lib/Navbar";
@@ -54,7 +55,7 @@ class NavBar extends Component {
                 Home
               </NavLink>
 
-              <NavLink to="/new" className="nav-link">
+              <NavLink to="/add" className="nav-link">
                 New Question
               </NavLink>
 

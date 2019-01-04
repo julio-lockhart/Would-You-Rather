@@ -12,7 +12,7 @@ import NavBar from "../NavBar";
 import DashBoard from "../DashBoard";
 import NewQuestion from "../NewQuestion";
 import LeaderBoard from "../LeaderBoard";
-import QuestionResults from "../QuestionResults";
+import QuestionContainer from "../QuestionContainer";
 
 class App extends Component {
   componentDidMount() {
@@ -35,10 +35,10 @@ class App extends Component {
               <div className="container mt-4 mb-4">
                 <Switch>
                   <Route path="/" exact component={DashBoard} />
-                  <Route path="/new" component={NewQuestion} />
+                  <Route path="/add" component={NewQuestion} />
                   <Route path="/login" component={Login} />
                   <Route path="/leaderboard" component={LeaderBoard} />
-                  <Route path="/question/:id" component={QuestionResults} />
+                  <Route path="/question/:id" component={QuestionContainer} />
                 </Switch>
               </div>
             </div>
@@ -50,7 +50,6 @@ class App extends Component {
 }
 
 const mapStateToProps = ({ authUser, loadingBar }) => {
-  console.log("loading", loadingBar.default);
   return {
     isLoading: loadingBar.default === 0 ? false : true,
     authUser
