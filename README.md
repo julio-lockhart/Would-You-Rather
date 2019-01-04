@@ -36,7 +36,7 @@ The project app will then automatically launch in your browser.
 
 ## Backend Server
 
-A backend server was given to us that provided the following operations (file can found in: [`_DATA_.js`](src/utils/_DATA_.js)):
+A backend server was given to us that provided the following operations (file can found in: [`_DATA.js`](src/utils/_DATA.js)):
 
 ## Data
 
