@@ -2,19 +2,23 @@ import { showLoading, hideLoading } from "react-redux-loading";
 
 // API
 import { getInitialData } from "../utils/api";
-import { _saveQuestion } from "../utils/_DATA";
+import { _saveQuestion, _saveQuestionAnswer } from "../utils/_DATA";
 
 // Question Actions
 import {
   addQuestion,
+  removeQuestion,
   saveQuestionAnswer,
+  removeQuestionAnswer,
   receiveQuestions
 } from "../actions/questions";
 
 // User Actions
 import {
   addUserQuestion,
+  removeUserQuestion,
   saveUserAnswer,
+  removeUserAnswer,
   receiveUsers
 } from "../actions/users";
 
@@ -45,17 +49,33 @@ export const handleAddNewQuestion = (author, optionOne, optionTwo) => {
         dispatch(addQuestion(question));
         dispatch(addUserQuestion(question.author, question.id));
       })
-      .then(() => dispatch(hideLoading()))
+      .then(() => {
+        dispatch(hideLoading());
+      })
       .catch(e => {
-        alert(e);
-        console.log(e);
+        dispatch(removeUserQuestion(newQuestion.author, newQuestion.id));
+        dispatch(removeQuestion(newQuestion.author, newQuestion.id));
+        alert("There was an issue saving your question. Please try again.");
       });
   };
 };
 
 export const handleAnswerQuestion = (authUser, questionID, answer) => {
   return dispatch => {
-    dispatch(saveQuestionAnswer(authUser, questionID, answer));
-    dispatch(saveUserAnswer(authUser, questionID, answer));
+    dispatch(showLoading());
+    return _saveQuestionAnswer({
+      authedUser: authUser,
+      qid: questionID,
+      answer
+    })
+      .then(() => {
+        dispatch(saveQuestionAnswer(authUser, questionID, answer));
+        dispatch(saveUserAnswer(authUser, questionID, answer));
+      })
+      .catch(() => {
+        dispatch(removeQuestionAnswer(authUser, questionID, answer));
+        dispatch(removeUserAnswer(authUser, questionID, answer));
+        alert("Oops! There was an error saving your answer. Please try again.");
+      });
   };
 };

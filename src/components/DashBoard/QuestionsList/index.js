@@ -4,7 +4,6 @@ import DisplayQuestion from "../../DisplayQuestion";
 // React-Bootstrap Components
 import ListGroup from "react-bootstrap/lib/ListGroup";
 import ListGroupItem from "react-bootstrap/lib/ListGroupItem";
-import Fade from "react-bootstrap/lib/Fade";
 
 const QuestionsList = ({ questions }) => {
   const orderedQuestions = questions.sort((a, b) => {
