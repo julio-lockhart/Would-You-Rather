@@ -6,6 +6,10 @@ The project was developed using React and Redux, which significance placed on Re
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Live Version
+
+A live version of the app can be found on [Heroku](https://lockhart-would-you-rather.herokuapp.com/)
+
 ### Installing
 
 Clone the repo
